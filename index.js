@@ -41,6 +41,27 @@ class Airplane {
 */
 
 class Person {
+  constructor(theName, theAge) {
+    this.name = theName,
+    this.age = theAge,
+    this.stomach = []
+  }
+  
+   eat(someFood){
+    if(this.stomach.length < 10){
+      this.stomach.push(someFood);
+    }
+  }
+  
+  poop(){
+    while(this.stomach.length > 0){
+      this.stomach.pop();
+    }
+  }
+  
+  toString(){
+    return `${this.name}, ${this.age}`;
+  }
 
 }
 
@@ -59,6 +80,31 @@ class Person {
 */
 
 class Car {
+  constructor(type, mpg) {
+    this.model = type,
+    this.milesPerGallon = mpg
+    this.tank = 0,
+    this.odometer = 0
+  }
+  fill(gallons){
+    this.tank+= gallons;
+  }
+  drive(distance){
+    if(this.tank == 0){
+      return `I ran out of fuel at ${this.odometer} miles!`
+    }
+    else if(this.tank <= distance/this.milesPerGallon)
+    {
+      this.odometer += this.tank * this.milesPerGallon;
+      this.tank = 0;
+      return `I ran out of fuel at ${this.odometer} miles!`;
+    }
+    else if(this.tank > distance/this.milesPerGallon)
+    {
+      this.tank -= distance/this.milesPerGallon;
+      this.odometer = (this.odometer + distance);
+    }
+  }
 
 }
 
@@ -75,6 +121,14 @@ class Car {
         + {name} and {location} of course come from the instance's own properties.
 */
 class Lambdasian {
+  constructor(bebop){
+    this.name = bebop.name,
+    this.age = bebop.age,
+    this.location = bebop.location
+  }
+  speak(){
+    return `Hello my name is ${this.name}, I am from ${this.location}`;
+  }
 
 }
 
@@ -92,8 +146,22 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
-
+class Instructor extends Lambdasian{
+  constructor(bebop){
+    super(bebop)
+    this.specialty = bebop.specialty,
+    this.favLanguage = bebop.favLanguage,
+    this.catchPhrase = bebop.catchPhrase
+  }
+  demo(subject){
+    return  `today we are learning about ${subject}`;
+  }
+  grade(student, subject){
+    return `${student.name} receives a perfect score on ${subject}`;
+  }
+  gradeStudent(student){
+    student.testGrade += (10 - (1 + (Math.floor(Math.random() * Math.floor(20)))));  //this adds a value between -10 and 10 to the student's testGrade.
+  }
 }
 
 /*
@@ -111,7 +179,35 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
+class Student extends Lambdasian{
+  constructor(bebop){
+    super(bebop)
+    this.previousBackground = bebop.previousBackground,
+    this.className = bebop.className,
+    this.favSubjects = bebop.favSubjects
+    this.testGrade = 1 + (Math.floor(Math.random() * Math.floor(100)));  // Stretch
+  }
+  listSubjects(){
+    let theString = "";
+    for(let i = 0; i < this.favSubjects.length; i++){
+      theString += this.favSubjects[i] + " ";
+    }
+    return theString;
+  }
+  PRAssignment(subject){
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject){
+    return `${this.name} has begun spring challenge on ${subject}`;
+  }
+  graduate(){ // Stretch
+    if(this.testGrade > 70){
+      return `${this.name} has graduated with a passing score of ${this.testGrade}`;
+    }
+    else{
+      return `${this.name} has failed to graduate with a score of ${this.testGrade}, and needs to re-attempt assignments for a better grade`;
+    }
+  } 
 
 }
 
@@ -128,8 +224,18 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
-
+class ProjectManager extends Instructor{
+  constructor(bebop){
+    super(bebop)
+    this.gradClassName = bebop.gradClassName,
+    this.favInstructor = bebop.favInstructor
+  }
+  standUp(channel){
+    return `${this.name} announces to ${channel}, @channel standy times!`;
+  }
+  debugsCode(student, subject){
+    return `${this.name} debugs ${student.name}'s code on ${subject}`;
+  }
 }
 
 /*
